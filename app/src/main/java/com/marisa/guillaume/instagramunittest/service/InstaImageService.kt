@@ -11,6 +11,9 @@ import retrofit2.http.Query
 
 interface InstaImageService {
 
+    @GET("users/self/media/recent")
+    fun getRecentMedia(@Query("access_token") token: String): Call<JsonObject>
+
     @GET("{name}/")
     fun getStories( @Path("name") name: String): Call<JsonObject>
 

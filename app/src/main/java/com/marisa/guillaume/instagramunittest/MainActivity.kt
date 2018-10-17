@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() , InstaImagesListener{
                     .load(src[2])//optional                       //optional
                     .into(findViewById<ImageView>(R.id.imageView2))
 
-            Picasso.with(this@MainActivity)
+            /*Picasso.with(this@MainActivity)
                     .load(src[3])//optional                       //optional
                     .into(findViewById<ImageView>(R.id.imageView3))
 
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() , InstaImagesListener{
 
             Picasso.with(this@MainActivity)
                     .load(src[5])//optional                       //optional
-                    .into(findViewById<ImageView>(R.id.imageView5))
+                    .into(findViewById<ImageView>(R.id.imageView5))*/
         }
     }
 

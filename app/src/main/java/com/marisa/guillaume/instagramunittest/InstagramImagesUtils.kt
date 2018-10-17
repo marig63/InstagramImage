@@ -20,7 +20,8 @@ fun getInstaImages(activity: MainActivity, listener: InstaImagesListener){
 
     var retrofit = Retrofit.Builder()
             .client(httpClient)
-            .baseUrl("https://apinsta.herokuapp.com/u/")
+            //.baseUrl("https://apinsta.herokuapp.com/u/")
+            .baseUrl("https://api.instagram.com/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -28,10 +29,10 @@ fun getInstaImages(activity: MainActivity, listener: InstaImagesListener){
     var storiesService = retrofit.create(InstaImageService::class.java)
 
 
-    var name = activity.findViewById<EditText>(R.id.editText).text.toString()
-    if(name == "") return
+    //var name = activity.findViewById<EditText>(R.id.editText).text.toString()
+    //if(name == "") return
 
-    val call = storiesService.getStories(name)
+    /*val call = storiesService.getStories(name)
     call.enqueue(object: Callback<JsonObject> {
         override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
             Log.d("request media","failure")
@@ -59,6 +60,31 @@ fun getInstaImages(activity: MainActivity, listener: InstaImagesListener){
             }
         }
 
+    })*/
+
+    val call = storiesService.getRecentMedia("8669902411.b81fbb2.716b5551e2f245eabf463b33f6ef6ff0")
+    call.enqueue(object: Callback<JsonObject> {
+        override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
+            Log.d("request media","failure")
+        }
+
+        override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
+            Log.d("request media","success")
+            response?.body()?.let {
+                if(it["data"] != null) {
+                    var array = it["data"].asJsonArray
+                    var max = if (array.size() >= 6) 6 else array.size()
+                    var src = mutableListOf<String>()
+                    for (i in 0..max - 1) {
+                        src.add(i, array[i].asJsonObject["images"].asJsonObject["low_resolution"].asJsonObject["url"].asString)
+                    }
+                    listener.onImagesReceived(ArrayList(src))
+                }
+                else{
+                    // Toast error
+                }
+            }
+        }
     })
 
 
